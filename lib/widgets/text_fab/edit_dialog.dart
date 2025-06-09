@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 /// Simple text edit dialog
 /// Main feature: Edit text with input validation
 class EditDialog extends StatelessWidget {
-  final String currentText;
-  final Function(String) onSave;
-
+  /// Konstruktor dla EditDialog widget
   const EditDialog({
-    super.key,
     required this.currentText,
     required this.onSave,
+    super.key,
   });
+
+  /// Aktualny tekst do edycji
+  final String currentText;
+
+  /// Callback do zapisania nowego tekstu
+  final Function(String) onSave;
 
   @override
   Widget build(BuildContext context) {

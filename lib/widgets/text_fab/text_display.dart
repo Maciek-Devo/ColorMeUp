@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 /// Simple text display widget with styled background
 /// Main feature: Shows/hides text with professional styling
 class TextDisplay extends StatelessWidget {
-  final String text;
-  final bool isVisible;
+  /// Konstruktor dla TextDisplay widget
+  const TextDisplay({required this.text, required this.isVisible, super.key});
 
-  const TextDisplay({super.key, required this.text, required this.isVisible});
+  /// Tekst do wyświetlenia
+  final String text;
+
+  /// Czy tekst ma być widoczny
+  final bool isVisible;
 
   @override
   Widget build(BuildContext context) {
