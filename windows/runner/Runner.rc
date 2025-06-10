@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", ".colormeup" "\0"
-            VALUE "FileDescription", "colormeup" "\0"
+            VALUE "FileDescription", "Color Me Up" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "colormeup" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 .colormeup. All rights reserved." "\0"
             VALUE "OriginalFilename", "colormeup.exe" "\0"
-            VALUE "ProductName", "colormeup" "\0"
+            VALUE "ProductName", "Color Me Up" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

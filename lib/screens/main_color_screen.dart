@@ -1,7 +1,7 @@
 import 'dart:math';
 
+import 'package:colormeup/widgets/main_fab/main_fab.dart';
 import 'package:colormeup/widgets/solid_lints_badge.dart';
-import 'package:colormeup/widgets/text_fab/control_fab.dart';
 import 'package:colormeup/widgets/text_fab/text_display.dart';
 import 'package:flutter/material.dart';
 
@@ -17,23 +17,36 @@ class MainColorScreen extends StatefulWidget {
 
 class _MainColorScreenState extends State<MainColorScreen> {
   static const int _maxRgbValue = 256;
+  static const int _maxHistorySize = 5;
 
   final Random _random = Random();
 
   Color _backgroundColor = Colors.white;
   String _text = 'Hello there';
   bool _showText = true;
+  List<Color> _colorHistory = [];
 
-  /// Generates random RGB color for background
+  /// Generates random RGB color for background and adds to history
   void _changeColor() {
+    final newColor = Color.fromRGBO(
+      _random.nextInt(_maxRgbValue),
+      _random.nextInt(_maxRgbValue),
+      _random.nextInt(_maxRgbValue),
+      1.0,
+    );
+
     setState(() {
-      _backgroundColor = Color.fromRGBO(
-        _random.nextInt(_maxRgbValue),
-        _random.nextInt(_maxRgbValue),
-        _random.nextInt(_maxRgbValue),
-        1.0,
-      );
+      _backgroundColor = newColor;
+      _addToHistory(newColor);
     });
+  }
+
+  /// Adds color to history (max 5 items)
+  void _addToHistory(Color color) {
+    _colorHistory.insert(0, color);
+    if (_colorHistory.length > _maxHistorySize) {
+      _colorHistory = _colorHistory.take(_maxHistorySize).toList();
+    }
   }
 
   /// Updates displayed text
@@ -62,11 +75,12 @@ class _MainColorScreenState extends State<MainColorScreen> {
           const SolidLintsBadge(),
         ],
       ),
-      floatingActionButton: ControlFab(
+      floatingActionButton: MainFab(
         text: _text,
-        isVisible: _showText,
+        isTextVisible: _showText,
+        colorHistory: _colorHistory,
         onTextChange: _updateText,
-        onToggle: _toggleText,
+        onToggleText: _toggleText,
       ),
     );
   }

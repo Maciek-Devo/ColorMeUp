@@ -17,9 +17,10 @@ class SolidLintsBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Use exactly the same margin as FloatingActionButtonLocation.endFloat
     return Positioned(
-      bottom: 16,
-      left: 16,
+      bottom: kFloatingActionButtonMargin,
+      left: kFloatingActionButtonMargin,
       child: GestureDetector(
         onTap: _openSolidLintsUrl,
         child: DecoratedBox(

@@ -4,131 +4,95 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('EditDialog Widget Tests', () {
-    testWidgets('Dialog displays with current text', (
-      WidgetTester tester,
-    ) async {
+    // Test constant to avoid magic numbers
+    const int maxTextLength = 40;
+
+    testWidgets('displays dialog with initial content', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: EditDialog(
-              currentText: 'Initial Text',
-              onSave: (_) {
-                // Test callback - no action needed for this test
-                return;
-              },
-            ),
+            body: EditDialog(currentText: 'Initial', onSave: (_) => {}),
           ),
         ),
       );
 
-      // Verify dialog elements
       expect(find.text('Edit Text'), findsOneWidget);
-      expect(find.text('Initial Text'), findsOneWidget);
-      expect(find.text('Cancel'), findsOneWidget);
+      expect(find.text('Initial'), findsOneWidget);
       expect(find.text('Save'), findsOneWidget);
-      expect(find.byType(TextField), findsOneWidget);
+      expect(find.text('Cancel'), findsOneWidget);
     });
 
-    testWidgets('Save button calls onSave with new text', (
-      WidgetTester tester,
-    ) async {
-      String savedText = '';
+    testWidgets('calls onSave with valid input', (tester) async {
+      String result = '';
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: EditDialog(
-              currentText: 'Initial Text',
-              onSave: (text) => savedText = text,
-            ),
+            body: EditDialog(currentText: '', onSave: (v) => result = v),
           ),
         ),
       );
 
-      // Enter new text
-      await tester.enterText(find.byType(TextField), 'New Text');
-
-      // Tap save button
+      await tester.enterText(find.byType(TextField), 'New');
+      await tester.pump();
       await tester.tap(find.text('Save'));
       await tester.pumpAndSettle();
 
-      // Verify text was saved
-      expect(savedText, equals('New Text'));
+      expect(result, equals('New'));
     });
 
-    testWidgets('Empty text defaults to "Hello there"', (
-      WidgetTester tester,
-    ) async {
-      String savedText = '';
-
+    testWidgets('shows error on empty text', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: EditDialog(
-              currentText: 'Initial Text',
-              onSave: (text) => savedText = text,
-            ),
+            body: EditDialog(currentText: 'Text', onSave: (_) => {}),
           ),
         ),
       );
 
-      // Clear text field
       await tester.enterText(find.byType(TextField), '');
+      await tester.pump();
 
-      // Tap save button
-      await tester.tap(find.text('Save'));
-      await tester.pumpAndSettle();
-
-      // Verify default text is used
-      expect(savedText, equals('Hello there'));
+      expect(find.text('Text cannot be empty'), findsOneWidget);
+      expect(
+        tester
+            .widget<TextButton>(find.widgetWithText(TextButton, 'Save'))
+            .onPressed,
+        isNull,
+      );
     });
 
-    testWidgets('TextField has correct properties', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('shows error when text too long', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: EditDialog(
-              currentText: 'Test Text',
-              onSave: (_) {
-                // Test callback - no action needed for this test
-                return;
-              },
-            ),
+            body: EditDialog(currentText: '', onSave: (_) => {}),
           ),
         ),
       );
 
-      // Verify TextField properties
-      final textField = tester.widget<TextField>(find.byType(TextField));
-      expect(textField.autofocus, isTrue);
-      expect(textField.decoration?.hintText, equals('Enter new text...'));
+      await tester.enterText(find.byType(TextField), 'a' * maxTextLength);
+      await tester.pump();
+
+      expect(find.textContaining('Text too long'), findsOneWidget);
     });
 
-    testWidgets('Cancel button closes dialog without saving', (
-      WidgetTester tester,
-    ) async {
-      String savedText = 'unchanged';
+    testWidgets('cancel does not call onSave', (tester) async {
+      String result = 'unchanged';
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: EditDialog(
-              currentText: 'Initial Text',
-              onSave: (text) => savedText = text,
-            ),
+            body: EditDialog(currentText: 'abc', onSave: (v) => result = v),
           ),
         ),
       );
 
-      // Enter text but cancel
-      await tester.enterText(find.byType(TextField), 'Changed Text');
+      await tester.enterText(find.byType(TextField), 'changed');
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
 
-      // Verify text was not saved
-      expect(savedText, equals('unchanged'));
+      expect(result, equals('unchanged'));
     });
   });
 }

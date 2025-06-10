@@ -1,10 +1,10 @@
 import 'package:colormeup/screens/main_color_screen.dart';
 import 'package:flutter/material.dart';
 
-/// Główna klasa aplikacji - punkt wejścia dla aplikacji ColorMeUp
-/// Konfiguruje podstawowe ustawienia MaterialApp
+/// Main application class – entry point for the ColorMeUp app.
+/// Sets up the basic MaterialApp configuration.
 class App extends StatelessWidget {
-  /// Konstruktor dla głównej aplikacji
+  /// Constructor for the main application widget.
   const App({super.key});
 
   @override

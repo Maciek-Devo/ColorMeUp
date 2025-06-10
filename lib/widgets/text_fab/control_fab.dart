@@ -1,10 +1,10 @@
 import 'package:colormeup/widgets/text_fab/edit_dialog.dart';
 import 'package:flutter/material.dart';
 
-/// Floating Action Button with text control menu
-/// Main features: Edit text and toggle visibility
+/// Floating Action Button (FAB) for text control options.
+/// Main functionalities: edit the displayed text and toggle its visibility.
 class ControlFab extends StatelessWidget {
-  /// Konstruktor dla ControlFab widget
+  /// Constructor for the ControlFab widget.
   const ControlFab({
     required this.text,
     required this.isVisible,
@@ -13,18 +13,19 @@ class ControlFab extends StatelessWidget {
     super.key,
   });
 
-  /// Tekst do wyświetlenia
+  /// The current text to display.
   final String text;
 
-  /// Czy tekst jest widoczny
+  /// Whether the text is currently visible.
   final bool isVisible;
 
-  /// Callback do zmiany tekstu
+  /// Callback triggered when the text is changed.
   final Function(String) onTextChange;
 
-  /// Callback do przełączania widoczności
+  /// Callback triggered when toggling text visibility.
   final VoidCallback onToggle;
 
+  /// Shows a bottom sheet with edit and toggle options.
   void _showOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
