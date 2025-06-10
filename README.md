@@ -1,92 +1,67 @@
-ColorMeUp
+# ColorMeUp
 
-A simple Flutter project that showcases dynamic background color generation, text visibility control, and in-app editing using a custom floating action button (FAB). Built with clean architecture in mind and structured for easy testing and scaling.
+A minimal Flutter project that focuses on interaction, clean architecture, and UI state handling. The app demonstrates core Flutter concepts such as state management, widget composition, and widget testing, while remaining easy to understand and extend.
 
-Features
+## Overview
 
-Tap anywhere to generate a random RGB background color
+ColorMeUp is a single-screen app that allows users to:
+- Tap anywhere on the screen to generate a random background color
+- Edit or hide an on-screen text overlay
+- View and copy the last 5 generated colors in both RGB and HEX formats
 
-Display customizable text ("Hello there" by default)
+The app is built with testability and clean separation of concerns in mind.
 
-Toggle text visibility using a FAB
+## Features
 
-Edit the displayed text via dialog
+### Color Generation
+- Tap anywhere on the screen to generate a new random color.
+- The current color is saved to a history list, limited to the 5 most recent entries.
+- A click counter in the history modal shows how many colors have been generated overall.
+- Color generation logic uses `dart:math` without any external packages.
 
-Linted with solid_lints
+### Editable Text Overlay
+- A default message (“Hello there”) is displayed in the center of the screen.
+- Users can edit or toggle the visibility of the text using a control menu triggered by a floating action button.
+- An input dialog allows simple customization of the message.
 
-Includes unit and widget tests
+### Color History Modal
+- A dedicated floating button opens a bottom modal displaying the 5 most recently generated colors.
+- Each color tile includes:
+  - A visual color preview
+  - RGB format (e.g. `RGB(123, 45, 67)`)
+  - HEX format (e.g. `#7B2D43`)
+  - Copy buttons for both formats
+  - A snackbar confirmation when a value is copied
 
-Project Structure
+### Floating Action Buttons
+The app includes several custom FABs:
+- **Main FAB**: Regenerates a random color
+- **Text FAB**: Shows/hides a static message
+- **Control FAB**: Opens a dialog to edit or hide the text
+- **History FAB**: Opens the color history modal
 
-lib/
-├── app.dart
-├── main.dart
-├── screens/
-│   └── main_color_screen.dart
-├── widgets/
-    └── text_fab/
-        ├── control_fab.dart
-        ├── edit_dialog.dart
-        └── text_display.dart
+## Technical Details
 
-test/
-├── unit/
-│   └── color_logic_test.dart
-└── widgets/text_fab/
-    ├── control_fab_test.dart
-    ├── edit_dialog_test.dart
-    └── text_display_test.dart
+- **Framework**: Flutter
+- **Architecture**: Clean widget composition (no external state management libraries)
+- **State**: Managed locally in `StatefulWidget`
+- **Color Logic**: Uses `dart:math` for color randomness
+- **Linter**: `solid_lints` ruleset for production and test code
+- **Minimum Flutter SDK**: 3.16+
 
-Linting Configuration
+## Testing
 
-This project uses solid_lints as its base rule set.
+Widget-level tests are written using the `flutter_test` package. Covered test cases include:
+- Visibility and interaction of floating buttons
+- Proper rendering of color history items
+- Snackbar behavior when copying RGB or HEX values
 
-Root-level analysis_options.yaml
+No third-party dependencies are used in the testing setup.
 
-include: package:solid_lints/analysis_options.yaml
+## Getting Started
 
-This ensures strict and consistent linting rules across the entire codebase.
+To run the project locally:
 
-Test-specific rules (optional)
-
-You may include a relaxed rule set for tests. To do this, place the following file in your test/ directory:
-
-# test/analysis_options.yaml
-include: package:solid_lints/analysis_options_test.yaml
-
-This can help when you want to allow prints or slightly looser constraints in unit tests.
-
-Getting Started
-
-Fetch dependencies:
-
+```bash
 flutter pub get
-
-Run the app:
-
 flutter run
-
-Run tests:
-
-flutter test
-
-Run linter manually:
-
-dart analyze
-dart run custom_lint
-
-Tech Stack
-
-Flutter 3.19+
-
-Dart 3.8+
-
-solid_lints for static analysis
-
-flutter_test for unit/widget testing
-
-Notes
-
-The original project contained a wrong linter path: package:solid_lints/solid_lints.yaml, which does not exist. It was fixed to package:solid_lints/analysis_options.yaml.
-
-Linting now works properly with full support for test files and CI compatibility.
